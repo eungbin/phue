@@ -62,7 +62,12 @@ lights = b.lights
 # Define a few command handlers. These usually take the two arguments update and
 # context. Error handlers also receive the raised TelegramError object in error 
 def start(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text('Hi! Use /set <seconds> to set a timer')
+    update.message.reply_text('Hi! we have 4 command!')
+    update.message.reply_text("You can turn on Philips hue : /turn on <light's index(0, 1, 2)>")
+    update.message.reply_text("Also, you can turn off Philips hue : /turn off <light's index(0, 1, 2)>")
+    update.message.reply_text("You can change light's color : /color <light's index> <red, blue, green>")
+    update.message.reply_text("Othere way : /color <light's index> <3 color codes(0~1)>")
+    update.message.reply_text("example : /color 1 0.5 0.5 0.5")
 
 def alarm(context):
     """Send the alarm message."""
@@ -94,6 +99,7 @@ def turn_on(update: Update, context: CallbackContext) -> None:
             return
 
         lights[choose].on = True
+        update.message.reply_text('Turned on {0}!'.format(choose))
     except():
         update.message.reply_text('Usage: /turn_on <0,1,2>')
 
@@ -111,6 +117,7 @@ def turn_off(update: Update, context: CallbackContext) -> None:
             return
 
         lights[choose].on = False
+        update.message.reply_text('Turned off {0}!'.format(choose))
     except():
         update.message.reply_text('Usage: /trun_off <0,1,2>')
 
@@ -143,6 +150,7 @@ def color(update: Update, context: CallbackContext) -> None:
 
         xy_color = rgb_to_xy(input_color[0], input_color[1], input_color[2])
         lights[choose].xy = xy_color
+        update.message.reply_text('Changed It!')
     except Exception as e:
         print(e)
         update.message.reply_text('Usage: /color <index> <color1> <color2> <color3> or /color <index> red/blue/green')
